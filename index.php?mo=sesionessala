@@ -1,0 +1,14 @@
+<script>
+      if (navigator.userAgent.toLowerCase().indexOf('msie')!=-1)
+      {
+        var varjs='';
+         if (varjs != parent.location)
+         {
+             //alert(varjs+' / '+parent.location);
+             document.location='http://www.senado.cl';
+         }
+      }else
+      {
+         document.location.href='http://www.senado.cl';
+      }
+   </script>

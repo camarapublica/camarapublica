@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Camarapublica</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="container-fluid">
+	<header>
+		<h2 id="logo"><a href="/">#camarapublica</a></h2>
+		<nav id="menu">
+			<ul>
+				<li>
+					<a href="/discussion">En Discusión</a>
+				</li>
+				<li>
+					<a href="/published">Publicados</a>
+				</li>
+				<li>
+					<a href="/archived">Descartados</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+<%= yield %>
+</div>
+
+</body>
+</html>
