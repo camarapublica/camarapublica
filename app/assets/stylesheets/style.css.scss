@@ -1,0 +1,31 @@
+header {
+	background-color:black;
+	color: white;
+	padding:10px;
+}
+header a {
+	color:white;
+}
+header a:hover {
+	color:white;
+}
+#logo {
+	width:200px;
+	margin-left:10px;
+}
+#menu {
+	top:28px;
+	right:30px;
+	float:right;
+	position:absolute;
+}
+#menu ul {
+	margin:0;
+	padding:0;
+	text-align:right;
+}
+#menu li {
+	float:left;
+	margin-right:20px;
+	list-style-type:none;
+}

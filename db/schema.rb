@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120912005731) do
+ActiveRecord::Schema.define(:version => 20121001232526) do
 
   create_table "politicians", :force => true do |t|
     t.string   "firstname"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20120912005731) do
     t.integer  "score",      :default => 0
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
+    t.integer  "status",     :default => 0
   end
 
   create_table "votes", :force => true do |t|

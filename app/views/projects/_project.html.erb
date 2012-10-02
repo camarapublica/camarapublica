@@ -1,6 +1,11 @@
 <div class="project">
 	<div class="project-score">
-		<%=project.score%>
+		<span class="score"><%=project.score%></span><br>
+		<a href="vote(<%=project.id%>,1)"><i class="icon thumbs icon-thumbsup"></i></a>
+		<a href="vote(<%=project.id%>,-1)"><i class="icon thumbs icon-thumbsdown"></i></a>
 	</div>
-	<%=link_to project.title, project%>
+	<div class="project-detail">
+		<h1><%=link_to project.title, project%></h1>
+		<span><%=project.statusname%></span> <span>Boletín Nº<%=link_to project.remoteid, "http://sil.senado.cl/cgi-bin/sil_proyectos.pl?"+project.remoteid%></span>
+	</div>
 </div>

@@ -1,3 +1,46 @@
 // Place all the styles related to the projects controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.project {
+	clear:both;
+	padding-bottom:10px;
+	margin-bottom:10px;
+	border-bottom:1px dotted #cccccc;
+	min-height:120px;
+}
+.project-score {
+	margin-top:10px;
+	width:50px;
+	float:left;
+	text-align:center;
+}
+.score {
+
+	clear:both;
+	font-size:30px;
+	width:100%;
+}
+.project-detail {
+	margin-left:55px;
+
+}
+.project-detail h1 {
+	font-size:36px;
+	line-height:32px;
+}
+.project-detail a {
+	color:black;
+	text-decoration:none;
+}
+.icon-thumbsup {
+	background-image:image-url("thumbsup.png");
+}
+.icon-thumbsdown {
+	background-image:image-url("thumbsdown.png");
+}
+.thumbs {
+	width:25px !important;
+	height:30px !important;
+	background-position:0% 0%; 
+}

@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "open-uri"
 class Project < ActiveRecord::Base
 	attr_accessible :remoteid, :score, :title
@@ -9,5 +10,12 @@ class Project < ActiveRecord::Base
 		i=0
 		tds=doc.css('td[@bgcolor="#f6f6f6"]')
 		self.update_attributes(:title=>tds[1].text)
+	end
+	def statusname
+		statusnames=["en discusión","publicado","detenido"]
+		statusnames[self.status]
+	end
+	def statuscolor
+
 	end
 end
