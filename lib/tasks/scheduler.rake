@@ -1,6 +1,6 @@
 task :getprojects => :environment do
 	require "open-uri"
-	doc = Nokogiri::HTML(open("http://sil.senado.cl/cgi-bin/sil_ultproy.pl").read)
+	doc = Nokogiri::HTML(open("http://localhos/cgi-bin/sil_ultproy.pl").read)
 	puts "BUSCANDO NUEVOS PROYECTOS DE LEY"
 	doc.css('td[@class="TEXTpais"]').each do |td|
 		remoteid=td.text.strip.chop.chop
@@ -10,7 +10,7 @@ task :getprojects => :environment do
 	end
 end
 task :updateremotedata => :environment do
-	Project.all.each do |project|
+	Project.order("updated_at").limit(100).each do |project|
 		project.fetchdata
 	end
 end
