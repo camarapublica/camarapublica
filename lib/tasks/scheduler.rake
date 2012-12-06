@@ -1,16 +1,15 @@
 task :getprojects => :environment do
 	require "open-uri"
-	doc = Nokogiri::HTML(open("http://sil.senado.cl/cgi-bin/sil_ultproy.pl").read)
-	puts "BUSCANDO NUEVOS PROYECTOS DE LEY"
-	doc.css('td[@class="TEXTpais"]').each do |td|
-		remoteid=td.text.strip.chop.chop
-		if project=Project.new(:remoteid=>remoteid).save
-			puts "NUEVO PROYECTO:"+remoteid+". BIENVENIDO!"
-		end
+	since= Time.now-1.month
+	url = "http://www.senado.cl/wspublico/tramitacion.php?fecha="+since.strftime("%d/%m/%Y");
+	doc = Nokogiri::XML(open(url))
+	puts "BUSCANDO NUEVOS PROYECTOS DE LEY ("+url+")";
+	projects = doc.xpath('//proyectos/proyecto').map do |p|
+		project=Project.new(:remoteid=>p.xpath("descripcion/boletin").inner_text)
+		puts "new project: "+project.remoteid if project.save
 	end
+	
 end
 task :updateremotedata => :environment do
-	Project.order("updated_at").limit(100).each do |project|
-		project.fetchdata
-	end
+	Project.last.fetchdata
 end
