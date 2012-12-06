@@ -8,7 +8,8 @@ class Project < ActiveRecord::Base
 		doc = Nokogiri::XML(open(url))
 		puts "BUSCANDO INFO PARA PROYECTO "+self.remoteid+" ("+url+")"
 		p=doc.xpath("//proyectos/proyecto")
-		self.update_attributes(:title=>p.xpath("descripcion/titulo").inner_text,:statusdescription=>)
+		puts Time.parse(p.xpath("descripcion/fecha_ingreso").inner_text)
+		self.update_attributes(:title=>p.xpath("descripcion/titulo").inner_text)
 	end
 	def statusname
 		statusnames=["en discusión","publicado","detenido"]
