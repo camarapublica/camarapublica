@@ -8,10 +8,20 @@ task :getprojects => :environment do
 		project=Project.new(:remoteid=>p.xpath("descripcion/boletin").inner_text)
 		puts "new project: "+project.remoteid if project.save
 	end
-	
 end
 task :updateremotedata => :environment do
-	Project.all.each do |p|
+	Project.where(:status=>0).each do |p|
 		p.fetchdata
+	end
+end
+task :getoldprojects => :environment do
+	require "open-uri"
+	doc = Nokogiri::HTML(open("http://camarapublica.cl/historial_proyectos.html").read)
+	puts "BUSCANDO VIEJOS PROYECTOS DE LEY"
+	doc.css('td[@class="TEXTpais"]').each do |td|
+		remoteid=td.text.strip.chop.chop
+		if project=Project.new(:remoteid=>remoteid).save
+			puts "NUEVO PROYECTO:"+remoteid+". BIENVENIDO!"
+		end
 	end
 end

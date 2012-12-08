@@ -6,6 +6,6 @@
 	</div>
 	<div class="project-detail">
 		<h1><%=link_to project.title, project%></h1>
-		<span class="label label-<%=project.statuscolor%>"><%=project.statusname%></span> <span>Boletín Nº<%=link_to project.remoteid, "http://sil.senado.cl/cgi-bin/sil_proyectos.pl?"+project.remoteid%></span>
+		<span class="label label-<%=project.statuscolor%>"><%=project.statusdescription%></span> <span>Boletín Nº<%=link_to project.remoteid, "http://sil.senado.cl/cgi-bin/sil_proyectos.pl?"+project.remoteid%></span>
 	</div>
 </div>

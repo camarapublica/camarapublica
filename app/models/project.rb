@@ -2,9 +2,10 @@
 require "open-uri"
 class Project < ActiveRecord::Base
 	has_many :updates
-	attr_accessible :remoteid, :score, :title, :updated_at, :submitted_at, :last_discussed
+	attr_accessible :remoteid, :score, :title, :updated_at, :submitted_at, :last_discussed, :status, :statusdescription
 	validates_uniqueness_of :remoteid
 	def fetchdata
+		self.update_attributes(:updated_at=>Time.now)
 		url="http://www.senado.cl/wspublico/tramitacion.php?boletin="+self.remoteid.split("-")[0]
 		doc = Nokogiri::XML(open(url))
 		puts "BUSCANDO INFO PARA PROYECTO "+self.remoteid+" ("+url+")"
@@ -28,13 +29,32 @@ class Project < ActiveRecord::Base
 				)
 
 			self.update_attributes(:last_discussed=>discussiondate) if discussiondate>self.last_discussed
-			if update.save
-				puts "+ update: "+update.inspect
-			else
-				puts "- duplicate: "+update.inspect
-			end
-			i=i+1;
+			puts "+ update: "+update.inspect if update.save
+		
 		end
+		# buscando etapa de la tramitacion, esto debería ser mas lindo pero la gente del senado olvidó ponerlo en su API
+		url="http://sil.senado.cl/cgi-bin/sil_proyectos.pl?"+self.remoteid
+		doc = Nokogiri::HTML(open(url).read)
+		tds=doc.css('td[@bgcolor="#f6f6f6"]')
+		subetapa=tds[8].text.strip
+		etapa=tds[7].text.strip
+				puts "etapa: "+etapa+" subetapa: "+subetapa
+
+		if tds[9]
+			ley=tds[9].text.strip
+			puts " ley: "+ley
+			self.update_attributes(:statusdescription=>ley, :status=>1)
+		else
+			if subetapa.length>1
+				self.update_attributes(:statusdescription=>subetapa)
+			else
+				self.update_attributes(:statusdescription=>etapa)
+			end
+		end
+		self.update_attributes(:status=>1) if(etapa=="Tramitación terminada" && subetapa[0..2]=="Ley")
+		self.update_attributes(:status=>2) if(self.statusdescription=="Retirado")
+		self.update_attributes(:status=>2) if(self.statusdescription=="Archivado")
+		puts self.inspect
 	end
 	def statusname
 		if self.updates.length>0
@@ -45,5 +65,6 @@ class Project < ActiveRecord::Base
 	end
 	def statuscolor
 		statuscolors=["default","success","important"]
+		return statuscolors[self.status]
 	end
 end

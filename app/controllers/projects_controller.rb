@@ -1,6 +1,8 @@
 class ProjectsController < ApplicationController
 	def index
-		@projects=Project.order("submitted_at DESC").page(params[:page]).per(10)
+		@projects=Project.order("submitted_at DESC")
+		@projects=@projects.where(:status=>params[:status]) if params[:status]
+		@projects=@projects.page(params[:page]).per(10)
 	end
 	def show
 		@project=Project.find(params[:id])
