@@ -11,5 +11,7 @@ task :getprojects => :environment do
 	
 end
 task :updateremotedata => :environment do
-	Project.last.fetchdata
+	Project.all.each do |p|
+		p.fetchdata
+	end
 end

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  session: MyString
+  date: 2012-12-07 12:54:57
+  description: MyText
+  statusdescription: MyString
+  project_id: 1
+
+two:
+  session: MyString
+  date: 2012-12-07 12:54:57
+  description: MyText
+  statusdescription: MyString
+  project_id: 1

@@ -1,0 +1,21 @@
+<style type="text/css">
+	.project {
+		border-bottom: none;
+	}
+</style>
+<%=render @project%>
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a href="#">Comentarios</a>
+  </li>
+  <li><a href="#">Trámites (<%=@project.updates.count%>)</a></li>
+  <li><a href="#">Leer Documento</a></li>
+</ul>
+<div id="user-discussion">
+
+</div>
+<div id="official-discussion">
+	<% @project.updates.order("date DESC").each do |update| %>
+		<%=render update%>
+	<% end %>
+</div>

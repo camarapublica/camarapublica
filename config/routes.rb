@@ -5,7 +5,7 @@ Camarapublica::Application.routes.draw do
   resources :projects
 
   # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
+  match 'test/:id' => 'projects#test'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
