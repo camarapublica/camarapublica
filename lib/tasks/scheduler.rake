@@ -10,7 +10,7 @@ task :getprojects => :environment do
 	end
 end
 task :updateremotedata => :environment do
-	Project.where(:status=>0).each do |p|
+	Project.order("updated_at").where(:status=>0).limit(100).each do |p|
 		p.fetchdata
 	end
 end

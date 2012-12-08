@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 		self.update_attributes(:updated_at=>Time.now)
 		url="http://www.senado.cl/wspublico/tramitacion.php?boletin="+self.remoteid.split("-")[0]
 		doc = Nokogiri::XML(open(url))
-		puts "BUSCANDO INFO PARA PROYECTO "+self.remoteid+" ("+url+")"
+		puts "BUSCANDO INFO PARA PROYECTO #"+self.id.to_s+" "+self.remoteid+" ("+url+")"
 		p=doc.xpath("//proyectos/proyecto")
 		submissiondate=Date.strptime(p.xpath("descripcion/fecha_ingreso").inner_text,'%d/%m/%Y').to_datetime;
 		self.update_attributes(
