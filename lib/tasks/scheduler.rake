@@ -6,7 +6,10 @@ task :getprojects => :environment do
 	puts "BUSCANDO NUEVOS PROYECTOS DE LEY ("+url+")";
 	projects = doc.xpath('//proyectos/proyecto').map do |p|
 		project=Project.new(:remoteid=>p.xpath("descripcion/boletin").inner_text)
-		puts "new project: "+project.remoteid if project.save
+		if project.save
+			puts "new project: "+project.remoteid
+			project.fetchdata
+		end
 	end
 end
 task :updateremotedata => :environment do
