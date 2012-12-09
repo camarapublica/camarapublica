@@ -10,6 +10,7 @@ task :getprojects => :environment do
 		if project.save
 			puts "new project: "+project.remoteid
 			project.fetchdata
+			project.announce
 		else
 			Project.find_by_remoteid(boletin).fetchdata
 		end

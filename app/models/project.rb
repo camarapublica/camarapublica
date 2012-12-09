@@ -60,4 +60,8 @@ class Project < ActiveRecord::Base
 		statuscolors=["default","success","important"]
 		return statuscolors[self.status]
 	end
+	def announce
+		bitly=Bitly.new("donemiterio", "R_3d38b50740671572e08dfd08f8cd4741")
+		Twitter.update(self.title+" "+bitly.shorten('http://camarapublica.cl/projects/'+self.id.to_s).short_url)
+	end
 end
