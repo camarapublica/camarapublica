@@ -38,18 +38,11 @@ class Project < ActiveRecord::Base
 		tds=doc.css('td[@bgcolor="#f6f6f6"]')
 		subetapa=tds[8].text.strip
 		etapa=tds[7].text.strip
-				puts "etapa: "+etapa+" subetapa: "+subetapa
-
-		if tds[9]
-			ley=tds[9].text.strip
-			puts " ley: "+ley
-			self.update_attributes(:statusdescription=>ley, :status=>1)
+		puts "etapa: "+etapa+" subetapa: "+subetapa
+		if subetapa.length>1
+			self.update_attributes(:statusdescription=>subetapa)
 		else
-			if subetapa.length>1
-				self.update_attributes(:statusdescription=>subetapa)
-			else
-				self.update_attributes(:statusdescription=>etapa)
-			end
+			self.update_attributes(:statusdescription=>etapa)
 		end
 		self.update_attributes(:status=>1) if(etapa=="Tramitación terminada" && subetapa[0..2]=="Ley")
 		self.update_attributes(:status=>2) if(self.statusdescription=="Retirado")

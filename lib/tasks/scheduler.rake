@@ -5,15 +5,18 @@ task :getprojects => :environment do
 	doc = Nokogiri::XML(open(url))
 	puts "BUSCANDO NUEVOS PROYECTOS DE LEY ("+url+")";
 	projects = doc.xpath('//proyectos/proyecto').map do |p|
-		project=Project.new(:remoteid=>p.xpath("descripcion/boletin").inner_text)
+		boletin=p.xpath("descripcion/boletin").inner_text
+		project=Project.new(:remoteid=>boletin)
 		if project.save
 			puts "new project: "+project.remoteid
 			project.fetchdata
+		else
+			Project.find_by_remoteid(boletin).fetchdata
 		end
 	end
 end
 task :updateremotedata => :environment do
-	Project.order("updated_at").where(:status=>0).limit(100).each do |p|
+	Project.order("updated_at").where(:status=>0).limit(200).each do |p|
 		p.fetchdata
 	end
 end
