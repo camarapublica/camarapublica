@@ -4,7 +4,15 @@
   <title>Camarapublica</title>
 <link href='http://fonts.googleapis.com/css?family=Fenix' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Inika' rel='stylesheet' type='text/css'>
-  
+  <script type="text/javascript">
+
+	<% if current_user %>
+  	var current_user=<%=current_user.id%>
+  <% else %>
+  var current_user=0
+  <% end %>
+    </script>
+
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -16,17 +24,38 @@
 		<nav id="menu">
 			<ul>
 				<li>
-					<a href="/discussion">En Discusión</a>
+					<a href="/about">¿Qué es?</a>
+				</li>
+				<% if current_user %>
+				<li>
+					<%= link_to "Cerrar Sesión", destroy_user_session_path, :method => :delete %>
+				</li>
+				<% else %>
+				<li>
+					<a href="/users/sign_up">Registro</a>
 				</li>
 				<li>
-					<a href="/published">Publicados</a>
+					<a href="/users/sign_in">Iniciar Sesión</a>
 				</li>
-				<li>
-					<a href="/archived">Descartados</a>
-				</li>
+				<% end %>
+		
 			</ul>
 		</nav>
 	</header>
+	   <% if notice %>
+
+		<div class="alert alert-info">
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  <%= notice %>
+		</div>
+
+	   <% elsif alert %>
+		<div class="alert">
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  <%= alert %>
+		</div>
+
+       <% end %>
 <%= yield %>
 </div>
 

@@ -2,6 +2,8 @@
 require "open-uri"
 class Project < ActiveRecord::Base
 	has_many :updates
+	has_many :comments
+	has_many :votes
 	attr_accessible :remoteid, :score, :title, :updated_at, :submitted_at, :last_discussed, :status, :statusdescription
 	validates_uniqueness_of :remoteid
 	def fetchdata
@@ -63,5 +65,13 @@ class Project < ActiveRecord::Base
 	def announce
 		bitly=Bitly.new("donemiterio", "R_3d38b50740671572e08dfd08f8cd4741")
 		Twitter.update(self.title+" "+bitly.shorten('http://camarapublica.cl/projects/'+self.id.to_s).short_url)
+	end
+	def updatescore
+		score=0
+		self.votes.each do |v|
+			score=score+v.score
+		end
+		self.update_attributes(:score=>score)
+		return score
 	end
 end

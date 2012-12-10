@@ -19,6 +19,8 @@ gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootst
 gem 'authlogic'
 gem 'twitter'
 gem 'bitly'
+gem 'devise'
+gem 'devise-i18n'
 
 # Gems used only for assets and not required
 # in production environments by default.

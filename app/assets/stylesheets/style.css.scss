@@ -35,3 +35,44 @@ header a:hover {
 	margin-right:20px;
 	list-style-type:none;
 }
+#comments li {
+	list-style-type:none;
+	padding:10px;
+	margin:0px 0px 10px 0px;
+}
+#comments {
+	margin:0;
+	padding:0;
+}
+.thread {
+	margin-left:15px;
+}
+.commentlinks {
+	font-size:11px;
+	margin-top:6px;
+	height:24px;
+}
+.commentbox {
+	margin-bottom:0px;
+}
+.comment-btn {
+	margin-bottom:10px;
+}
+.icon-thumbsup {
+	background-image:image-url("thumbsup.png");
+}
+.icon-thumbsdown {
+	background-image:image-url("thumbsdown.png");
+}
+.icon-thumbsup-small {
+	background-image:image-url("thumbsup.png");
+}
+.icon-thumbsdown-small {
+	background-image:image-url("thumbsdown.png");
+}
+.comment-text {
+	min-height:50px;
+}
+.alert {
+	margin-top:15px;
+}

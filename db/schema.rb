@@ -11,45 +11,76 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121208151633) do
+ActiveRecord::Schema.define(:version => 20121209233411) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.integer  "comment_id"
+    t.text     "text"
+    t.integer  "score",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
 
   create_table "politicians", :force => true do |t|
-    t.string   "firstname"
-    t.string   "lastname"
-    t.string   "secondlastname"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.string    "firstname"
+    t.string    "lastname"
+    t.string    "secondlastname"
+    t.timestamp "created_at",     :null => false
+    t.timestamp "updated_at",     :null => false
   end
 
   create_table "projects", :force => true do |t|
-    t.string   "remoteid"
-    t.text     "title"
-    t.integer  "score",             :default => 0
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.integer  "status",            :default => 0
-    t.date     "submitted_at"
-    t.datetime "last_discussed"
-    t.string   "statusdescription"
+    t.string    "remoteid"
+    t.text      "title"
+    t.integer   "score",             :default => 0
+    t.timestamp "created_at",                       :null => false
+    t.timestamp "updated_at",                       :null => false
+    t.integer   "status",            :default => 0
+    t.date      "submitted_at"
+    t.timestamp "last_discussed"
+    t.string    "statusdescription"
   end
 
   create_table "updates", :force => true do |t|
-    t.string   "session"
-    t.datetime "date"
-    t.text     "description"
-    t.string   "statusdescription"
-    t.integer  "project_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.string   "chamber"
+    t.string    "session"
+    t.timestamp "date"
+    t.text      "description"
+    t.string    "statusdescription"
+    t.integer   "project_id"
+    t.timestamp "created_at",        :null => false
+    t.timestamp "updated_at",        :null => false
+    t.string    "chamber"
   end
 
+  create_table "users", :force => true do |t|
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "name"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
   create_table "votes", :force => true do |t|
-    t.integer  "politician_id"
-    t.integer  "score"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.integer  "project_id"
+    t.integer   "politician_id"
+    t.integer   "score"
+    t.timestamp "created_at",    :null => false
+    t.timestamp "updated_at",    :null => false
+    t.integer   "project_id"
+    t.integer   "user_id"
+    t.integer   "comment_id"
   end
 
 end

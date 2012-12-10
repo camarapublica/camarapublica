@@ -12,4 +12,23 @@ class ProjectsController < ApplicationController
 		@project.fetchdata
 		render :text => @project.inspect
 	end	
+	def comment
+		@comment=Comment.new
+		if params[:object]=="project"
+			@comment.project_id=params[:id]
+		elsif params[:object]=="comment"
+			@comment.comment_id=params[:id]
+		end
+		@comment.user_id=current_user.id
+		@comment.text=params[:text]
+		@comment.save
+	end
+	def vote
+		project=Project.find(params[:id])
+		if Vote.new(:project_id=>project.id,:user_id=>current_user.id,:score=>params[:score]).save
+			render :text => project.updatescore
+		else
+			render :text => "ERROR"
+		end
+	end
 end

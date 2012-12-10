@@ -4,18 +4,48 @@
 	}
 </style>
 <%=render @project%>
-<ul class="nav nav-tabs">
-  <li class="active">
-    <a href="#">Comentarios</a>
-  </li>
-  <li><a href="#">Trámites (<%=@project.updates.count%>)</a></li>
-  <li><a href="#">Leer Documento</a></li>
-</ul>
-<div id="user-discussion">
+<div class="tabs">
+	<ul class="nav nav-tabs">
+	  <li class="active">
+	    <a href="#comments-tab" data-toggle="tab" id="comments-tab-link">Comentarios</a>
+	  </li>
 
-</div>
-<div id="official-discussion">
-	<% @project.updates.order("date DESC").each do |update| %>
-		<%=render update%>
-	<% end %>
+	  <li><a href="#official-discussion-tab" data-toggle="tab">Trámites (<%=@project.updates.count%>)</a></li>
+	  <li><a href="#document-tab" data-toggle="tab">Leer Documento</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="comments-tab">
+	<div class="comment-btn">
+			<% if current_user %>
+				<a href="javascript:reply('project',<%=@project.id%>)" style="btn btn-large">Escribir un comentario</a>
+			<% else %>
+				Debes estar registrado para comentar. puedes <a href="/users/sign_in">Iniciar Sesión</a> o <a href="/users/sign_up">Registrarte</a>
+			<% end %>
+			</div>
+			<ul id="comments">
+			<% if @project.comments.count>0 %>
+				<%=render @project.comments.order("score DESC") %>
+			<% else %>
+				<p id="nocomments">No hay comentarios en este proyecto</p>
+			<% end %>
+			</ul>
+			
+		</div>
+		<div  class="tab-pane" id="official-discussion-tab">
+			<table class="table table-striped">
+		
+			<% @project.updates.order("date DESC").each do |update| %>
+				<%=render update%>
+			<% end %>
+			</table>
+		</div>
+		<div class="tab-pane" id="document-tab">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</div>
+	</div>
 </div>

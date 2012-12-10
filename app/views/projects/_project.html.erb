@@ -1,8 +1,8 @@
 <div class="project">
 	<div class="project-score">
-		<span class="score"><%=project.score%></span><br>
-		<a href="vote(<%=project.id%>,1)"><i class="icon thumbs icon-thumbsup"></i></a>
-		<a href="vote(<%=project.id%>,-1)"><i class="icon thumbs icon-thumbsdown"></i></a>
+		<span class="score" id="projectscore<%=project.id%>"><%=project.score%></span><br>
+		<a href="javascript:vote('project',<%=project.id%>,1)"><i class="icon thumbs icon-thumbsup"></i></a>
+		<a href="javascript:vote('project',<%=project.id%>,-1)"><i class="icon thumbs icon-thumbsdown"></i></a>
 	</div>
 	<div class="project-detail">
 		<h1><%=link_to project.title, project%></h1>
