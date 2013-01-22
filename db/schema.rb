@@ -24,34 +24,34 @@ ActiveRecord::Schema.define(:version => 20121209233411) do
   end
 
   create_table "politicians", :force => true do |t|
-    t.string    "firstname"
-    t.string    "lastname"
-    t.string    "secondlastname"
-    t.timestamp "created_at",     :null => false
-    t.timestamp "updated_at",     :null => false
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "secondlastname"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "projects", :force => true do |t|
-    t.string    "remoteid"
-    t.text      "title"
-    t.integer   "score",             :default => 0
-    t.timestamp "created_at",                       :null => false
-    t.timestamp "updated_at",                       :null => false
-    t.integer   "status",            :default => 0
-    t.date      "submitted_at"
-    t.timestamp "last_discussed"
-    t.string    "statusdescription"
+    t.string   "remoteid"
+    t.text     "title"
+    t.integer  "score",             :default => 0
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "status",            :default => 0
+    t.date     "submitted_at"
+    t.datetime "last_discussed"
+    t.string   "statusdescription"
   end
 
   create_table "updates", :force => true do |t|
-    t.string    "session"
-    t.timestamp "date"
-    t.text      "description"
-    t.string    "statusdescription"
-    t.integer   "project_id"
-    t.timestamp "created_at",        :null => false
-    t.timestamp "updated_at",        :null => false
-    t.string    "chamber"
+    t.string   "session"
+    t.datetime "date"
+    t.text     "description"
+    t.string   "statusdescription"
+    t.integer  "project_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "chamber"
   end
 
   create_table "users", :force => true do |t|
@@ -74,13 +74,13 @@ ActiveRecord::Schema.define(:version => 20121209233411) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "votes", :force => true do |t|
-    t.integer   "politician_id"
-    t.integer   "score"
-    t.timestamp "created_at",    :null => false
-    t.timestamp "updated_at",    :null => false
-    t.integer   "project_id"
-    t.integer   "user_id"
-    t.integer   "comment_id"
+    t.integer  "politician_id"
+    t.integer  "score"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.integer  "comment_id"
   end
 
 end
