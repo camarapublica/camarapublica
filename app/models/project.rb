@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "open-uri"
 class Project < ActiveRecord::Base
+	include ActionView::Helpers::TextHelper
 	has_many :updates
 	has_many :comments
 	has_many :votes
