@@ -1,9 +1,18 @@
+
 <% if @projects.length>0 %>
+
 <div class="row-fluid">
 	<div class="span9">
-	<% @projects.each do |project| %>
-		<%=render project%>	
-	<% end %>
+	<ul class="nav nav-pills">
+	  <li class="<%="active" unless params[:order] || params[:status] %>">
+	    <a href="/">Últimos Discutidos</a>
+	  </li>
+	  <li class="<%="active" if params[:order]=="id" %>"><a href="/?order=id">Últimos Ingresados</a></li>
+	  <li class="<%="active" if params[:status]=="1" %>"><a href="/?status=1">Aprobados</a></li>
+	  <li class="<%="active" if params[:status]=="2" %>"><a href="/?status=2">Retirados</a></li>
+	</ul>
+	<%=render @projects%>	
+	
 <%=paginate @projects%>
 </div>
 <div class="span3">

@@ -78,3 +78,14 @@ header a:hover {
 	display:block;
 	margin-left:13px;
 }
+.nav-pills > .active > a {
+	background-color:black;
+	color:white;
+}
+.nav-pills > .active > a:hover {
+	background-color:black;
+}
+
+.nav-pills  a {
+	color:black;
+}
