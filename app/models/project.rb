@@ -68,6 +68,15 @@ class Project < ActiveRecord::Base
 		statuscolors=["default","success","important"]
 		return statuscolors[self.status]
 	end
+	def scorecolor
+		if self.score>0
+			"success"
+		elsif self.score<0
+			"important"
+		else
+			"default"
+		end
+	end
 	def announce
 		if Rails.env.production?
 			begin

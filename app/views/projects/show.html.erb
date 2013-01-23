@@ -17,7 +17,7 @@
 		<div class="tab-pane active" id="comments-tab">
 	<div class="comment-btn">
 			<% if current_user %>
-				<a href="javascript:reply('project',<%=@project.id%>)" style="btn btn-large">Escribir un comentario</a>
+				<a href="javascript:reply('project',<%=@project.id%>)" class="btn btn-large">Escribir un comentario</a>
 			<% else %>
 				Debes estar registrado para comentar. puedes <a href="/users/sign_in">Iniciar Sesión</a> o <a href="/users/sign_up">Registrarte</a>
 			<% end %>

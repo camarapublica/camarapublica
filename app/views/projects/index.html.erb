@@ -1,8 +1,7 @@
 
 <% if @projects.length>0 %>
 
-<div class="row-fluid">
-	<div class="span9">
+
 	<ul class="nav nav-pills">
 	  <li class="<%="active" unless params[:order] || params[:status] %>">
 	    <a href="/">Últimos Discutidos</a>
@@ -14,11 +13,7 @@
 	<%=render @projects%>	
 	
 <%=paginate @projects%>
-</div>
-<div class="span3">
-	hola
-</div>
-</div>
+
 <% else %>
 <h1>Lo sentimos</h1>
 <p>No hay resultados para la búsqueda :(</p>

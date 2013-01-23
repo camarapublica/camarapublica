@@ -41,7 +41,16 @@
 		</div>
 
        <% end %>
+
+<div class="row-fluid">
+	<div class="span9">
 <%= yield %>
+</div>
+<aside class="span3">
+	<%=render "layouts/sidebar"%>
+</aside>
+</div>
+
 </div>
 
 </body>
