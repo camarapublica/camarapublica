@@ -25,6 +25,7 @@ class Project < ActiveRecord::Base
 		i=0;
 		doc.xpath("//proyectos/proyecto/tramitacion/tramite").map do |t|
 			discussiondate=Date.strptime(t.xpath("FECHA").inner_text,'%d/%m/%Y').to_datetime;
+			self.updates.destroy_all
 			update=Update.new(
 				:session=>t.xpath("SESION").inner_text,
 				:date=>discussiondate,
