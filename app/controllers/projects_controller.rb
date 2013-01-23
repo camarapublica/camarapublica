@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
 		if params[:q] && params[:q].length>0 then
 			@projects=Project.search(params[:q])
 		else
-			@projects=Project.order("submitted_at DESC")
+			@projects=Project.order("last_discussed DESC, submitted_at DESC")
 			@projects=@projects.where(:status=>params[:status]) if params[:status]
 		end
 		@projects=@projects.page(params[:page]).per(10)

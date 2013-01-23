@@ -7,8 +7,9 @@ class Project < ActiveRecord::Base
 	has_many :comments
 	has_many :votes
 	attr_accessible :remoteid, :score, :title, :updated_at, :submitted_at, :last_discussed, :status, :statusdescription
-	pg_search_scope :search, :against => [:title, :statusdescription, :remoteid],:ignoring => :accents
+	pg_search_scope :search, :against => [:title, :statusdescription, :remoteid],:ignoring => :accents, :order_within_rank => "last_discussed ASC, id DESC"
 	validates_uniqueness_of :remoteid
+
 	def fetchdata
 		self.update_attributes(:updated_at=>Time.now)
 		url="http://www.senado.cl/wspublico/tramitacion.php?boletin="+self.remoteid.split("-")[0]
@@ -35,7 +36,6 @@ class Project < ActiveRecord::Base
 
 			self.update_attributes(:last_discussed=>discussiondate) if discussiondate>self.last_discussed
 			puts "+ update: "+update.inspect if update.save
-		
 		end
 		# buscando etapa de la tramitacion, esto debería ser mas lindo pero la gente del senado olvidó ponerlo en su API
 		url="http://sil.senado.cl/cgi-bin/sil_proyectos.pl?"+self.remoteid
