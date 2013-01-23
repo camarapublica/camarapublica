@@ -50,6 +50,7 @@ class Project < ActiveRecord::Base
 			self.update_attributes(:statusdescription=>etapa)
 		end
 		self.update_attributes(:status=>1) if(etapa=="Tramitación terminada" && subetapa[0..2]=="Ley")
+		self.update_attributes(:status=>1) if(etapa=="Tramitación terminada" && subetapa[0..3]=="D.S.")
 		self.update_attributes(:status=>2) if(self.statusdescription=="Retirado")
 		self.update_attributes(:status=>2) if(self.statusdescription=="Archivado")
 		puts self.inspect
