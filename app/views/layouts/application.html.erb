@@ -21,25 +21,10 @@
 <div class="container-fluid">
 	<header>
 		<h2 id="logo"><a href="/">#camarapublica</a></h2>
-		<nav id="menu">
-			<ul>
-				<li>
-					<a href="/about">¿Qué es?</a>
-				</li>
-				<% if current_user %>
-				<li>
-					<%= link_to "Cerrar Sesión", destroy_user_session_path, :method => :delete %>
-				</li>
-				<% else %>
-				<li>
-					<a href="/users/sign_up">Registro</a>
-				</li>
-				<li>
-					<a href="/users/sign_in">Iniciar Sesión</a>
-				</li>
-				<% end %>
-		
-			</ul>
+		<nav id="search">
+			<form class="navbar-search pull-left" action="/">
+		  	<input type="text" class="search-query" placeholder="Buscar" name="q" value="<%=params[:q]%>">
+		</form>
 		</nav>
 	</header>
 	   <% if notice %>

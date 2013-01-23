@@ -22,6 +22,7 @@ gem 'bitly'
 gem 'devise'
 gem 'devise-i18n'
 gem 'cancan'
+gem 'pg_search'
 
 # Gems used only for assets and not required
 # in production environments by default.

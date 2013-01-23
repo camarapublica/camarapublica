@@ -1,3 +1,4 @@
+<% if @projects.length>0 %>
 <div class="row-fluid">
 	<div class="span9">
 	<% @projects.each do |project| %>
@@ -9,3 +10,8 @@
 	hola
 </div>
 </div>
+<% else %>
+<h1>Lo sentimos</h1>
+<p>No hay resultados para la búsqueda :(</p>
+<p>Crees que esto es un error? <a href="/contacto">Contáctate con nosotros!</a>
+<% end %>

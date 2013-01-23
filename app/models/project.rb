@@ -1,11 +1,13 @@
 # encoding: utf-8
 require "open-uri"
 class Project < ActiveRecord::Base
+	include PgSearch
 	include ActionView::Helpers::TextHelper
 	has_many :updates
 	has_many :comments
 	has_many :votes
 	attr_accessible :remoteid, :score, :title, :updated_at, :submitted_at, :last_discussed, :status, :statusdescription
+	pg_search_scope :search, :against => [:title, :statusdescription, :remoteid],:ignoring => :accents
 	validates_uniqueness_of :remoteid
 	def fetchdata
 		self.update_attributes(:updated_at=>Time.now)
