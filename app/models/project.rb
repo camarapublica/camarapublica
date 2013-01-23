@@ -64,11 +64,13 @@ class Project < ActiveRecord::Base
 		return statuscolors[self.status]
 	end
 	def announce
-		begin
-			bitly=Bitly.new("donemiterio", "R_3d38b50740671572e08dfd08f8cd4741")
-			Twitter.update(truncate(self.title, :length=>120)+" "+bitly.shorten('http://camarapublica.cl/projects/'+self.id.to_s).short_url)
-		rescue
-			puts "Twitter Error"
+		if Rails.env.production?
+			begin
+				bitly=Bitly.new("donemiterio", "R_3d38b50740671572e08dfd08f8cd4741")
+				Twitter.update(truncate(self.title, :length=>120)+" "+bitly.shorten('http://camarapublica.cl/projects/'+self.id.to_s).short_url)
+			rescue
+				puts "Twitter Error"
+			end
 		end
 	end
 	def updatescore

@@ -7,7 +7,7 @@
 	<p class='comment-text'><%=comment.text%></p>
 	<div class="commentlinks">
 		<div style="float:left;width:200px;margin-top:4px">
-			Escrito por <%=comment.user.name%> hace <%=time_ago_in_words(comment.created_at)%>
+			hace <%=time_ago_in_words(comment.created_at)%>
 		</div>
 		<div style="float:right">
 		<a href="javascript:reply('comment',<%=comment.id%>)" class="btn btn-mini">Responder</a>
