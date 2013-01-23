@@ -4,6 +4,7 @@
 		<a href="javascript:vote('comment',<%=comment.id%>,-1)"><i class="icon thumbs icon-thumbsdown-small"></i></a>
 	</div>
 <li class="well">
+	<div class="comment-name"><%=link_to(comment.user.name, "/perfil/"+comment.user.id.to_s) %> (<%=comment.user.karma%>) dice:</div>
 	<p class='comment-text'><%=comment.text%></p>
 	<div class="commentlinks">
 		<div style="float:left;width:200px;margin-top:4px">
@@ -11,6 +12,9 @@
 		</div>
 		<div style="float:right">
 		<a href="javascript:reply('comment',<%=comment.id%>)" class="btn btn-mini">Responder</a>
+		<% if comment.created_at>6.hours.ago && comment.user.id==current_user.id %>
+			<a href="/deletecomment/<%=comment.id%>" class="btn btn-mini btn-danger">Eliminar</a>
+		<% end %>
 		<% if comment.comments.count>0 %>
 		<a href="javascript:expandthread(<%=comment.id%>)" id="expand-btn-<%=comment.id%>" class="btn btn-mini"><%=comment.comments.count%> respuestas</a>
 		<a href="javascript:closethread(<%=comment.id%>)" id="close-btn-<%=comment.id%>" style="display:none" class="btn btn-mini">cerrar</a>

@@ -10,6 +10,7 @@ Camarapublica::Application.routes.draw do
   match 'comment' => 'projects#comment'
   match 'vote/project/:id/:score' => 'projects#vote'
   match 'vote/comment/:id/:score' => 'comments#vote'
+  match 'deletecomment/:id' => 'comments#delete'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:

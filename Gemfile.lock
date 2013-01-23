@@ -47,6 +47,7 @@ GEM
       httparty (>= 0.7.6)
       oauth2 (>= 0.5.0, < 0.9)
     builder (3.0.4)
+    cancan (1.6.8)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -160,6 +161,7 @@ PLATFORMS
 DEPENDENCIES
   authlogic
   bitly
+  cancan
   coffee-rails (~> 3.2.1)
   devise
   devise-i18n

@@ -21,6 +21,7 @@ gem 'twitter'
 gem 'bitly'
 gem 'devise'
 gem 'devise-i18n'
+gem 'cancan'
 
 # Gems used only for assets and not required
 # in production environments by default.
