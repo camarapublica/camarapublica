@@ -11,7 +11,7 @@ function reply(object,id) {
 		$("#expand-btn-"+id).hide();
 		$("#comment"+id).remove();
 	}
-	html="<form action='javascript:submitcomment(\""+object+id+"\")' style='margin:0' id='"+object+id+"'><div class='row'><div class='span10'><textarea name='text' class='span10'></textarea><input type='hidden' name='object' value='"+object+"'><input type='hidden' name='id' value='"+id+"'></div><div style='text-align:center' class='span2'><input type='submit' class='btn btn-success btn-large btn-reply' value='Comentar'></div></div></form>"
+	html="<div class='newcomment'><form action='javascript:submitcomment(\""+object+id+"\")' style='margin:0' id='"+object+id+"'><textarea name='text' style='width:80%;margin-right:16px'></textarea><input type='hidden' name='object' value='"+object+"'><input type='hidden' name='id' value='"+id+"'><input type='submit' class='btn btn-success btn-large btn-reply' value='Comentar'></form></div>"
 	$(targetdiv).prepend(html)
 }
 function submitcomment(formid) {
