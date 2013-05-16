@@ -1,25 +1,26 @@
-
-<% @popular=Project.order("score DESC").where(:status=>0).first %>
-<% @hated=Project.order("score").where(:status=>0).first %>
-<% @discussed=Project.order("score DESC").where(:status=>0).first %>
-<% if current_user %>
-<h4>Hola <%=current_user.name %>!</h4>
-<p>Tienes <%=current_user.karma %> karma
-	<br>Has votado por <%=current_user.votes.count %> proyecto<%="s" unless current_user.votes.count==1 %>
-</p>
-<p><a href="/perfil/<%=current_user.id%>">mi perfil</a> - <%= link_to 'cerrar sesión', destroy_user_session_path, :method => :delete%></p>
-<% else %>
-<h3>Hola!</h3>
-<p>Cámara pública es una nueva forma de opinar sobre los proyectos de ley que actualmente se están tramitando en el congreso.</p><p>Aquí tu puedes votar a favor o en contra y ayudar a medir el verdadero interés de la comunidad sobre las leyes chilenas.</p>
-<p><a href="/users/sign_up" class="btn btn-small">registrate!</a> <a href="/users/sign_in" class="btn btn-small">iniciar sesión</a></p>
+<% if @popular && @hated && @discussed %>
+	<% @popular=Project.order("score DESC").where(:status=>0).first %>
+	<% @hated=Project.order("score").where(:status=>0).first %>
+	<% @discussed=Project.order("score DESC").where(:status=>0).first %>
+	<% if current_user %>
+	<h4>Hola <%=current_user.name %>!</h4>
+	<p>Tienes <%=current_user.karma %> karma
+		<br>Has votado por <%=current_user.votes.count %> proyecto<%="s" unless current_user.votes.count==1 %>
+	</p>
+	<p><a href="/perfil/<%=current_user.id%>">mi perfil</a> - <%= link_to 'cerrar sesión', destroy_user_session_path, :method => :delete%></p>
+	<% else %>
+	<h3>Hola!</h3>
+	<p>Cámara pública es una nueva forma de opinar sobre los proyectos de ley que actualmente se están tramitando en el congreso.</p><p>Aquí tu puedes votar a favor o en contra y ayudar a medir el verdadero interés de la comunidad sobre las leyes chilenas.</p>
+	<p><a href="/users/sign_up" class="btn btn-small">registrate!</a> <a href="/users/sign_in" class="btn btn-small">iniciar sesión</a></p>
+	<% end %>
+	<hr>
+	<h4>el más popular</h4>
+	<p><span class="label label-<%=@popular.scorecolor%>"><%=@popular.score%></span> <%=link_to(@popular.title, @popular)%></p>
+	<h4>el más odiado</h4>
+	<p><span class="label label-<%=@hated.scorecolor%>"><%=@hated.score%></span> <%=link_to(@hated.title, @hated)%></p>
+	<h4>el más polémico</h4>
+	<p><span class="label label-<%=@discussed.scorecolor%>"><%=@discussed.score%></span> <%=link_to(@discussed.title, @discussed)%></p>
+	<hr>
 <% end %>
-<hr>
-<h4>el más popular</h4>
-<p><span class="label label-<%=@popular.scorecolor%>"><%=@popular.score%></span> <%=link_to(@popular.title, @popular)%></p>
-<h4>el más odiado</h4>
-<p><span class="label label-<%=@hated.scorecolor%>"><%=@hated.score%></span> <%=link_to(@hated.title, @hated)%></p>
-<h4>el más polémico</h4>
-<p><span class="label label-<%=@discussed.scorecolor%>"><%=@discussed.score%></span> <%=link_to(@discussed.title, @discussed)%></p>
-<hr>
 <a href="/acerca">Acerca de cámara pública</a><br>
 <a href="/contacto">Contacto</a>
