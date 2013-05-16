@@ -7,8 +7,10 @@ class Ability
     user ||= User.new # guest user (not logged in)
     if user.admin?
         can :manage, :all
-    else
         can :delete, Comment
+    elsif user.id
+        can :vote, Project
+    else
         can :read, :all
     end
     #
