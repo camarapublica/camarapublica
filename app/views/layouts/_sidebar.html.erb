@@ -1,7 +1,8 @@
-<% if @popular && @hated && @discussed %>
 	<% @popular=Project.order("score DESC").where(:status=>0).first %>
 	<% @hated=Project.order("score").where(:status=>0).first %>
 	<% @discussed=Project.order("score DESC").where(:status=>0).first %>
+<% if @popular && @hated && @discussed %>
+
 	<% if current_user %>
 	<h4>Hola <%=current_user.name %>!</h4>
 	<p>Tienes <%=current_user.karma %> karma
