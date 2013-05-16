@@ -16,6 +16,7 @@ class Project < ActiveRecord::Base
 		doc = Nokogiri::XML(open(url))
 		puts "BUSCANDO INFO PARA PROYECTO #"+self.id.to_s+" "+self.remoteid+" ("+url+")"
 		p=doc.xpath("//proyectos/proyecto")
+		puts "fecha de ingreso "+p.xpath("descripcion/fecha_ingreso").inspect
 		submissiondate=Date.strptime(p.xpath("descripcion/fecha_ingreso").inner_text,'%d/%m/%Y').to_datetime;
 		self.update_attributes(
 			:title=>p.xpath("descripcion/titulo").inner_text,

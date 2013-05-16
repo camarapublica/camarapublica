@@ -39,4 +39,9 @@ class ProjectsController < ApplicationController
 			render :text => "ERROR"
 		end
 	end
+	def update
+		project=Project.find(params[:id])
+		project.fetchdata
+		render :json => project
+	end
 end
