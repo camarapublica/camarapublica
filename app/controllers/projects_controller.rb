@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  before_filter :set_project, except: [:index]
+  
 	def index
 		if params[:q] && params[:q].length>0 then
 			@projects=Project.search(params[:q])
@@ -12,14 +14,15 @@ class ProjectsController < ApplicationController
 		end
 		@projects=@projects.page(params[:page]).per(10)
 	end
+  
 	def show
-		@project=Project.find(params[:id])
 	end
+  
 	def test
-		@project=Project.find(params[:id])
 		@project.fetchdata
 		render :text => @project.inspect
 	end	
+  
 	def comment
 		@comment=Comment.new
 		if params[:object]=="project"
@@ -31,17 +34,23 @@ class ProjectsController < ApplicationController
 		@comment.text=params[:text]
 		@comment.save
 	end
+  
 	def vote
-		project=Project.find(params[:id])
-		if Vote.new(:project_id=>project.id,:user_id=>current_user.id,:score=>params[:score]).save
+    the_vote = Vote.new(project_id: project.id, user_id: current_user.id, score: params[:score])
+		if the_vote.save
 			render :text => project.updatescore
 		else
 			render :text => "ERROR"
 		end
 	end
+  
 	def update
-		project=Project.find(params[:id])
-		project.fetchdata
+		@project.fetchdata
 		render :json => project
 	end
+  
+  private
+    def set_project
+      @project = Project.find(params[:id])
+    end
 end
