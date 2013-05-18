@@ -1,3 +1,4 @@
+require 'open-uri'
 class SenadoAPI
   def fetch_project(remote_id)
 		url = project_url(remote_id)
@@ -50,6 +51,7 @@ class SenadoAPI
     when etapa == "Tramitación terminada" && subetapa[0..3] == "D.S." then 1
     when period[:statusdescription] == "Retirado"  then 2
     when period[:statusdescription] == "Archivado" then 2
+    else 0
     end
     
     period
