@@ -10,52 +10,26 @@ class Project < ActiveRecord::Base
 	pg_search_scope :search, :against => [:title, :statusdescription, :remoteid],:ignoring => :accents, :order_within_rank => "last_discussed ASC, id DESC"
 	validates_uniqueness_of :remoteid
 
-	def fetchdata
-		self.update_attributes(:updated_at=>Time.now)
-		url="http://www.senado.cl/wspublico/tramitacion.php?boletin="+self.remoteid.split("-")[0]
-		doc = Nokogiri::XML(open(url))
-		puts "BUSCANDO INFO PARA PROYECTO #"+self.id.to_s+" "+self.remoteid+" ("+url+")"
-		p=doc.xpath("//proyectos/proyecto")
-		puts "fecha de ingreso "+p.xpath("descripcion/fecha_ingreso").inspect
-		submissiondate=Date.strptime(p.xpath("descripcion/fecha_ingreso").inner_text,'%d/%m/%Y').to_datetime;
-		self.update_attributes(
-			:title=>p.xpath("descripcion/titulo").inner_text,
-			:submitted_at=>submissiondate
-			);
-		self.update_attributes(:last_discussed=>submissiondate) if self.last_discussed==nil
-		i=0;
-		doc.xpath("//proyectos/proyecto/tramitacion/tramite").map do |t|
-			discussiondate=Date.strptime(t.xpath("FECHA").inner_text,'%d/%m/%Y').to_datetime;
-			# enable if something goes wrong
-			self.updates.destroy_all
-			update=Update.new(
-				:session=>t.xpath("SESION").inner_text,
-				:date=>discussiondate,
-				:description=>t.xpath("DESCRIPCIONTRAMITE").inner_text,
-				:statusdescription=>t.xpath("ETAPDESCRIPCION").inner_text,
-				:project_id=>self.id,
-				:chamber=>t.xpath("CAMARATRAMITE").inner_text
-				)
+  def fetch
+    api.fetch_project(remoteid)
+  end
 
-			self.update_attributes(:last_discussed=>discussiondate) if discussiondate>self.last_discussed
-			puts "+ update: "+update.inspect if update.save
+	def fetchdata
+    project_data = fetch
+    tramites = project_data.delete(:tramites)
+    
+		self.update_attributes(project_data)
+		if self.last_discussed.nil? then
+      self.update_attributes(last_discussed: submitted_at)
+    end
+
+		tramites.each do |tramite|
+			self.updates.destroy_all # at some point we'll want to keep the updates
+			update = self.updates.new(tramite)
+			self.update_attributes(last_discussed: update.date) if update.date > last_discussed
+			puts "+ update: #{update.inspect}" if update.save
 		end
-		# buscando etapa de la tramitacion, esto debería ser mas lindo pero la gente del senado olvidó ponerlo en su API
-		url="http://sil.senado.cl/cgi-bin/sil_proyectos.pl?"+self.remoteid
-		doc = Nokogiri::HTML(open(url).read)
-		tds=doc.css('td[@bgcolor="#f6f6f6"]')
-		subetapa=tds[8].text.strip
-		etapa=tds[7].text.strip
-		puts "etapa: "+etapa+" subetapa: "+subetapa
-		if subetapa.length>1
-			self.update_attributes(:statusdescription=>subetapa)
-		else
-			self.update_attributes(:statusdescription=>etapa)
-		end
-		self.update_attributes(:status=>1) if(etapa=="Tramitación terminada" && subetapa[0..2]=="Ley")
-		self.update_attributes(:status=>1) if(etapa=="Tramitación terminada" && subetapa[0..3]=="D.S.")
-		self.update_attributes(:status=>2) if(self.statusdescription=="Retirado")
-		self.update_attributes(:status=>2) if(self.statusdescription=="Archivado")
+    
 		puts self.inspect
 	end
 	def statusname
@@ -96,4 +70,9 @@ class Project < ActiveRecord::Base
 		self.update_attributes(:score=>score)
 		return score
 	end
+  
+  private
+    def api
+      @api ||= SenadoAPI.new
+    end
 end
