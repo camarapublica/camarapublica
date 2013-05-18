@@ -1,5 +1,4 @@
 class Comment < ActiveRecord::Base
-  	attr_accessible :comment_id, :project_id, :score, :text, :user_id
   	has_many :comments
   	belongs_to :user
   	has_many :votes

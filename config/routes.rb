@@ -6,12 +6,12 @@ Camarapublica::Application.routes.draw do
   resources :projects
 
   # Sample of regular route:
-  match 'test/:id' => 'projects#test'
-  match 'comment' => 'projects#comment'
-  match 'vote/project/:id/:score' => 'projects#vote'
-  match 'vote/comment/:id/:score' => 'comments#vote'
-  match 'deletecomment/:id' => 'comments#delete'
-  match 'updateproject/:id' => 'projects#update'
+  get 'test/:id' => 'projects#test'
+  post 'comment' => 'projects#comment'
+  post 'vote/project/:id/:score' => 'projects#vote'
+  post 'vote/comment/:id/:score' => 'comments#vote'
+  delete 'deletecomment/:id' => 'comments#delete'
+  patch 'updateproject/:id' => 'projects#update'
 
   # Keep in mind you can assign values other than :controller and :action
 

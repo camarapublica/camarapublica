@@ -6,7 +6,7 @@ class Project < ActiveRecord::Base
 	has_many :updates
 	has_many :comments
 	has_many :votes
-	attr_accessible :remoteid, :score, :title, :updated_at, :submitted_at, :last_discussed, :status, :statusdescription
+	# attr_accessible :remoteid, :score, :title, :updated_at, :submitted_at, :last_discussed, :status, :statusdescription
 	pg_search_scope :search, :against => [:title, :statusdescription, :remoteid],:ignoring => :accents, :order_within_rank => "last_discussed ASC, id DESC"
 	validates_uniqueness_of :remoteid
 
