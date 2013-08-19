@@ -33,6 +33,8 @@ class Project < ActiveRecord::Base
 		case
 		when p_status=="Archivado" then status=2
 		when p_status=="Retirado" then status=2
+		when p_status=="Inconstitucional" then status=2
+		when p_status=="Rechazado" then status=2
 		when p_status=="Publicado" then status=1
 		end
 		self.update_attributes(:status=>status)
