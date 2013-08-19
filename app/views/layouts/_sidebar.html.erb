@@ -16,11 +16,11 @@
 	<% end %>
 	<hr>
 	<h4>el más popular</h4>
-	<p><span class="label label-<%=@popular.scorecolor%>"><%=@popular.score%></span> <%=link_to(@popular.title, @popular)%></p>
+	<p><span class="label label-<%=@popular.scorecolor%>"><%=@popular.score%></span> <%=link_to(@popular.title, "/projects/"+@popular.remoteid)%></p>
 	<h4>el más odiado</h4>
-	<p><span class="label label-<%=@hated.scorecolor%>"><%=@hated.score%></span> <%=link_to(@hated.title, @hated)%></p>
+	<p><span class="label label-<%=@hated.scorecolor%>"><%=@hated.score%></span> <%=link_to(@hated.title, "/projects/"+@hated.remoteid)%></p>
 	<h4>el más polémico</h4>
-	<p><span class="label label-<%=@discussed.scorecolor%>"><%=@discussed.score%></span> <%=link_to(@discussed.title, @discussed)%></p>
+	<p><span class="label label-<%=@discussed.scorecolor%>"><%=@discussed.score%></span> <%=link_to(@discussed.title, "/projects/"+@discussed.remoteid)%></p>
 	<hr>
 <% end %>
 <a href="/acerca">Acerca de cámara pública</a><br>
