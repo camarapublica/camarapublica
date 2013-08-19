@@ -9,7 +9,7 @@
 		</a>
 	</div>
 	<div class="project-detail">
-		<h1><%=link_to project.title, project%></h1>
+		<h1><%=link_to project.title, "/projects/"+project.remoteid%></h1>
 		<span class="label label-<%=project.statuscolor%>"><%=project.statusdescription%></span> <span>Boletín Nº<%=link_to project.remoteid, "http://sil.senado.cl/cgi-bin/sil_proyectos.pl?"+project.remoteid%></span>
 	</div>
 </div>

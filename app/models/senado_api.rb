@@ -64,12 +64,7 @@ class SenadoAPI
     def period_url(remote_id)
       "http://sil.senado.cl/cgi-bin/sil_proyectos.pl?#{remote_id}"
     end
-    def xpath_to_text(xpath)
-      xpath.inner_text.strip
-    end
-    def xpath_to_date(xpath)
-      Date.strptime(xpath_to_text(xpath), '%d/%m/%Y').to_datetime
-    end
+    
     def logger
       @logger ||= Logger.new(STDOUT)
     end

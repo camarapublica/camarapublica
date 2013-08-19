@@ -4,11 +4,8 @@ class CommentsController < ApplicationController
   
 	def vote
     the_vote = Vote.new(comment_id: @comment.id, user_id: current_user.id, score: params[:score])
-		if the_vote.save
-			render :text => comment.updatescore
-		else
-			render :text => "ERROR"
-		end
+    the_vote.save
+	render :text => @comment.updatescore
 	end
   
 	def delete

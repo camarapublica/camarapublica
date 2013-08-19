@@ -1,18 +1,20 @@
+#encoding: utf-8
 task :getprojects => :environment do
 	require "open-uri"
 	since= Time.now-1.month
 	url = "http://www.senado.cl/wspublico/tramitacion.php?fecha="+since.strftime("%d/%m/%Y");
 	doc = Nokogiri::XML(open(url))
 	puts "BUSCANDO NUEVOS PROYECTOS DE LEY ("+url+")";
-	projects = doc.xpath('//proyectos/proyecto').map do |p|
+	projects = doc.xpath('//proyectos/proyecto')
+	projects.each do |p|
 		boletin=p.xpath("descripcion/boletin").inner_text
 		project=Project.new(:remoteid=>boletin)
 		if project.save
 			puts "new project: "+project.remoteid
-			project.delay.fetchdata
-			project.delay.announce
+			project.fetchdata
+			project.announce
 		else
-			Project.find_by_remoteid(boletin).delay.fetchdata
+			Project.find_by_remoteid(boletin).fetchdata
 		end
 	end
 end

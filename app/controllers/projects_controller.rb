@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_filter :set_project, except: [:index]
+  before_filter :set_project, except: [:index, :show, :update]
   
 	def index
 		if params[:q] && params[:q].length>0 then
@@ -16,12 +16,10 @@ class ProjectsController < ApplicationController
 	end
   
 	def show
+		@project=Project.where(:remoteid=>params[:id]).first
 	end
   
-	def test
-		@project.fetchdata
-		render :text => @project.inspect
-	end	
+
   
 	def comment
 		@comment=Comment.new
@@ -36,17 +34,19 @@ class ProjectsController < ApplicationController
 	end
   
 	def vote
-    the_vote = Vote.new(project_id: project.id, user_id: current_user.id, score: params[:score])
-		if the_vote.save
-			render :text => project.updatescore
-		else
-			render :text => "ERROR"
+		if oldvote = Vote.where(project_id: @project.id, user_id: current_user.id).first
+			oldvote.destroy
 		end
+    	the_vote = Vote.new(project_id: @project.id, user_id: current_user.id, score: params[:score])
+    	the_vote.save
+		render :text => @project.updatescore
 	end
   
 	def update
+				@project=Project.where(:remoteid=>params[:id]).first
+
 		@project.fetchdata
-		render :json => project
+		render :json => @project
 	end
   
   private

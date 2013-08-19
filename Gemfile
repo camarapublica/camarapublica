@@ -5,11 +5,9 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-group :development do
-	gem 'sqlite3'
-end
+gem 'pg'
+gem 'unicorn'
 group :production do
-	gem 'pg'
 	gem 'newrelic_rpm'
 end
 
@@ -23,7 +21,6 @@ gem 'devise'
 gem 'devise-i18n'
 gem 'cancan'
 gem 'pg_search'
-gem 'delayed_job_active_record'
 
 # Gems used only for assets and not required
 # in production environments by default.

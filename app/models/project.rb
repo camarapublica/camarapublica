@@ -1,4 +1,4 @@
-# encoding: utf-8
+#encoding: utf-8
 require "open-uri"
 class Project < ActiveRecord::Base
 	include PgSearch
@@ -10,27 +10,70 @@ class Project < ActiveRecord::Base
 	pg_search_scope :search, :against => [:title, :statusdescription, :remoteid],:ignoring => :accents, :order_within_rank => "last_discussed ASC, id DESC"
 	validates_uniqueness_of :remoteid
 
-  def fetch
-    api.fetch_project(remoteid)
-  end
+	def xpath_to_text(xpath)
+		xpath.inner_text.strip
+	end
+	def xpath_to_date(xpath)
+		Date.strptime(xpath_to_text(xpath), '%d/%m/%Y').to_datetime
+	end
 
 	def fetchdata
-    project_data = fetch
-    tramites = project_data.delete(:tramites)
-    
-		self.update_attributes(project_data)
-		if self.last_discussed.nil? then
-      self.update_attributes(last_discussed: submitted_at)
-    end
-
-		tramites.each do |tramite|
-			self.updates.destroy_all # at some point we'll want to keep the updates
-			update = self.updates.new(tramite)
-			self.update_attributes(last_discussed: update.date) if update.date > last_discussed
-			puts "+ update: #{update.inspect}" if update.save
+		# project info
+		url = "http://www.senado.cl/wspublico/tramitacion.php?boletin=" + self.remoteid.split("-")[0]
+		doc = Nokogiri::XML(open(url))
+		logger.info "BUSCANDO INFO PARA PROYECTO ##{remoteid} (#{url})"
+		p_xpath = doc.xpath("//proyectos/proyecto")
+		self.update_attributes(:submitted_at=>xpath_to_date(p_xpath.xpath("descripcion/fecha_ingreso")))
+		self.update_attributes(:title=>xpath_to_text(p_xpath.xpath("descripcion/titulo")))
+		self.update_attributes(:statusdescription=>xpath_to_text(p_xpath.xpath("descripcion/etapa")))
+		p_status=xpath_to_text(p_xpath.xpath("descripcion/estado")).strip
+		puts p_status
+		status=0
+		case
+		when p_status=="Archivado" then status=2
+		when p_status=="Retirado" then status=2
+		when p_status=="Publicado" then status=1
 		end
-    
+		self.update_attributes(:status=>status)
+		# updates
+		self.updates.destroy_all # at some point we'll want to keep the updates
+		tramites_xpath = doc.xpath("//proyectos/proyecto/tramitacion/tramite")
+		tramites_xpath.each do |tramite_xpath|
+			update=Update.new(
+				date: xpath_to_date(tramite_xpath.xpath("FECHA")),
+				session: xpath_to_text(tramite_xpath.xpath("SESION")),
+				description: xpath_to_text(tramite_xpath.xpath("DESCRIPCIONTRAMITE")),
+				statusdescription: xpath_to_text(tramite_xpath.xpath("ETAPDESCRIPCION")),
+				chamber: xpath_to_text(tramite_xpath.xpath("CAMARATRAMITE")),
+				project_id: self.id
+				)
+			update.save
+			puts update.inspect
+		end
 		puts self.inspect
+	end
+	def fetchstatus
+		# deprecated, at last
+		doc = Nokogiri::HTML open "http://www.senado.cl/wspublico/tramitacion.php?boletin=" + self.remoteid.split("-")[0]
+		tds = doc.css('td[@bgcolor="#f6f6f6"]') # LOL
+
+		subetapa = tds[8].text.strip
+		etapa    = tds[7].text.strip
+		logger.info "etapa: #{etapa} subetapa: #{subetapa}"
+
+		period = {
+			statusdescription: subetapa.blank? ? etapa : subetapa
+		}
+
+		period[:status] = \
+		case
+		when etapa == "Tramitación terminada" && subetapa[0..2] == "Ley"  then 1
+		when etapa == "Tramitación terminada" && subetapa[0..3] == "D.S." then 1
+		when period[:statusdescription] == "Retirado"  then 2
+		when period[:statusdescription] == "Archivado" then 2
+		else 0
+		end
+
 	end
 	def statusname
 		if self.updates.length>0
@@ -70,9 +113,9 @@ class Project < ActiveRecord::Base
 		self.update_attributes(:score=>score)
 		return score
 	end
-  
-  private
-    def api
-      @api ||= SenadoAPI.new
-    end
+
+	private
+	def api
+		@api ||= SenadoAPI.new
+	end
 end

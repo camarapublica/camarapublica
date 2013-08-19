@@ -8,7 +8,7 @@
 	  </li>
 	  <li class="<%="active" if params[:order]=="id" %>"><a href="/?order=id">Últimos Ingresados</a></li>
 	  <li class="<%="active" if params[:status]=="1" %>"><a href="/?status=1">Aprobados</a></li>
-	  <li class="<%="active" if params[:status]=="2" %>"><a href="/?status=2">Retirados</a></li>
+	  <li class="<%="active" if params[:status]=="2" %>"><a href="/?status=2">Archivados</a></li>
 	</ul>
 	<%=render @projects%>	
 	
