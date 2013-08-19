@@ -21,13 +21,11 @@ class Project < ActiveRecord::Base
 		# project info
 		url = "http://www.senado.cl/wspublico/tramitacion.php?boletin=" + self.remoteid.split("-")[0]
 		doc = Nokogiri::XML(open(url))
-		logger.info "BUSCANDO INFO PARA PROYECTO ##{remoteid} (#{url})"
 		p_xpath = doc.xpath("//proyectos/proyecto")
 		self.update_attributes(:submitted_at=>xpath_to_date(p_xpath.xpath("descripcion/fecha_ingreso")))
 		self.update_attributes(:title=>xpath_to_text(p_xpath.xpath("descripcion/titulo")))
 		self.update_attributes(:statusdescription=>xpath_to_text(p_xpath.xpath("descripcion/etapa")))
 		p_status=xpath_to_text(p_xpath.xpath("descripcion/estado")).strip
-		puts p_status
 		status=0
 		case
 		when p_status=="Archivado" then status=2
@@ -36,7 +34,6 @@ class Project < ActiveRecord::Base
 		end
 		self.update_attributes(:status=>status)
 		# updates
-		self.updates.destroy_all # at some point we'll want to keep the updates
 		tramites_xpath = doc.xpath("//proyectos/proyecto/tramitacion/tramite")
 		tramites_xpath.each do |tramite_xpath|
 			update=Update.new(
@@ -47,10 +44,10 @@ class Project < ActiveRecord::Base
 				chamber: xpath_to_text(tramite_xpath.xpath("CAMARATRAMITE")),
 				project_id: self.id
 				)
-			update.save
-			puts update.inspect
+			if update.save
+				puts "new update: "+update.inspect
+			end
 		end
-		puts self.inspect
 	end
 	def fetchstatus
 		# deprecated, at last
