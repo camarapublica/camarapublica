@@ -6,6 +6,8 @@ class Project < ActiveRecord::Base
 	has_many :updates
 	has_many :comments
 	has_many :votes
+	has_many :authorships
+	has_many :congressmen, through: :authorships
 	attr_accessible :remoteid, :score, :title, :updated_at, :submitted_at, :last_discussed, :status, :statusdescription
 	pg_search_scope :search, :against => [:title, :statusdescription, :remoteid],:ignoring => :accents, :order_within_rank => "last_discussed ASC, id DESC"
 	validates_uniqueness_of :remoteid
@@ -52,6 +54,18 @@ class Project < ActiveRecord::Base
 			if update.save
 				puts "new update: "+update.inspect
 			end
+		end
+		# authors
+		authors_xpath = doc.xpath("//proyectos/proyecto/autores/autor")
+		authors_xpath.each do |author_xpath|
+			fullname=xpath_to_text(author_xpath.xpath("PARLAMENTARIO"))
+			names=fullname.split(",")[1].strip
+			surnames=fullname.split(",")[0].strip
+			unless @congressman=Congressman.where(:names=>names,:surnames=>surnames).first
+				@congressman=Congressman.new(:names=>names,:surnames=>surnames)
+				@congressman.save
+			end
+			Authorship.new(:project_id=>self.id, :congressman_id=>@congressman.id).save
 		end
 		self.update_attributes(:last_discussed=>discussed)
 	end
@@ -116,9 +130,9 @@ class Project < ActiveRecord::Base
 		self.update_attributes(:score=>score)
 		return score
 	end
-
-	private
-	def api
-		@api ||= SenadoAPI.new
+	def documenturl
+		doc = Nokogiri::HTML open "http://sil.senado.cl/cgi-bin/sil_proyectos.pl?" + self.remoteid
+		button = doc.css('a[@onmouseout="ima_of(\'tra\')"]')
+		"http://minecraft.mego.cl/catdoc.php?id="+button.attribute("href").text.split("?")[1].split(",")[0]
 	end
 end

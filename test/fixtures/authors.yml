@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  names: MyString
+  surnames: MyString
+  karma: 1
+
+two:
+  names: MyString
+  surnames: MyString
+  karma: 1

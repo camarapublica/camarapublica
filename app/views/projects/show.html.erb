@@ -11,9 +11,13 @@
 	  </li>
 
 	  <li><a href="#official-discussion-tab" data-toggle="tab">Trámites (<%=@project.updates.count%>)</a></li>
-	  <li><a href="#document1-tab" data-toggle="tab">Ficha en senado.cl</a></li>
+	  <li><a href="#document1-tab" data-toggle="tab">Documento (beta)</a></li>
+	  <li><a href="#document2-tab" data-toggle="tab">Ficha en senado.cl</a></li>
+	  <% if @project.congressmen.count>0 %>
+	  <li><a href="#authors-tab" data-toggle="tab">Autores (<%=@project.congressmen.count%>)</a></li>
+	  <% end %>
 	  <% if current_user && current_user.admin? %>
-	  <li><a href="#document2-tab" data-toggle="tab">Debug</a></li>
+	  <li><a href="#document3-tab" data-toggle="tab">Debug</a></li>
 	  <% end %>
 
 	</ul>
@@ -44,10 +48,21 @@
 			</table>
 		</div>
 		<div class="tab-pane" id="document1-tab">
-			<iframe src="http://sil.senado.cl/cgi-bin/sil_proyectos.pl?<%=@project.remoteid%>" style="width:100%;height=500px" height="500">
+			<iframe frameborder="0"src="<%=@project.documenturl%>" style="width:100%;height=500px" height="500">
 			</iframe>
 		</div>
 		<div class="tab-pane" id="document2-tab">
+			<iframe frameborder="0"src="http://sil.senado.cl/cgi-bin/sil_proyectos.pl?<%=@project.remoteid%>" style="width:100%;height=500px" height="500">
+			</iframe>
+		</div>
+		<div class="tab-pane" id="authors-tab">
+			<table class="table table-striped">
+			<% @project.congressmen.each do |congressman| %>
+				<%=render congressman%>
+			<% end %>
+			</table>
+		</div>
+		<div class="tab-pane" id="document3-tab">
 			<iframe src="http://www.senado.cl/wspublico/tramitacion.php?boletin=<%=@project.remoteid.split("-")[0]%>" style="width:100%;height=500px" height="500">
 			</iframe>
 		</div>
