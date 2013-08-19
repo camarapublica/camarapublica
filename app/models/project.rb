@@ -102,7 +102,7 @@ class Project < ActiveRecord::Base
 		if Rails.env.production?
 			begin
 				bitly=Bitly.new("donemiterio", "R_3d38b50740671572e08dfd08f8cd4741")
-				Twitter.update(truncate(self.title, :length=>120)+" "+bitly.shorten('http://camarapublica.cl/projects/'+self.id.to_s).short_url)
+				Twitter.update(truncate(self.title, :length=>120)+" "+bitly.shorten('http://camarapublica.cl/projects/'+self.remoteid).short_url)
 			rescue
 				puts "Twitter Error"
 			end
