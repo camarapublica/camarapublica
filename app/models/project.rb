@@ -19,6 +19,7 @@ class Project < ActiveRecord::Base
 
 	def fetchdata
 		# project info
+		puts "updating project #{self.remoteid}"
 		url = "http://www.senado.cl/wspublico/tramitacion.php?boletin=" + self.remoteid.split("-")[0]
 		doc = Nokogiri::XML(open(url))
 		p_xpath = doc.xpath("//proyectos/proyecto")
