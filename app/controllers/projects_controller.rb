@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
 			if params[:order]=="id"
 				@projects=Project.order("submitted_at DESC,last_discussed DESC")
 			else
-				@projects=Project.order("last_discussed DESC, submitted_at DESC")
+				@projects=Project.order("last_discussed DESC")
 			end
 			@projects=@projects.where(:status=>params[:status]) if params[:status]
 		end
