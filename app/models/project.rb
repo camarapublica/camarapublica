@@ -34,6 +34,7 @@ class Project < ActiveRecord::Base
 		end
 		self.update_attributes(:status=>status)
 		# updates
+		last_discussed=self.submitted_at
 		tramites_xpath = doc.xpath("//proyectos/proyecto/tramitacion/tramite")
 		tramites_xpath.each do |tramite_xpath|
 			update=Update.new(
@@ -44,10 +45,14 @@ class Project < ActiveRecord::Base
 				chamber: xpath_to_text(tramite_xpath.xpath("CAMARATRAMITE")),
 				project_id: self.id
 				)
+			if update.date>last_discussed
+				last_discussed=update.date
+			end
 			if update.save
 				puts "new update: "+update.inspect
 			end
 		end
+		self.last_discussed=last_discussed
 	end
 	def fetchstatus
 		# deprecated, at last
