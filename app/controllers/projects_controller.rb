@@ -16,7 +16,12 @@ class ProjectsController < ApplicationController
 	end
   
 	def show
+
 		@project=Project.where(:remoteid=>params[:id]).first
+		if @project.updated_at < 6.hours.ago
+			@project.fetchdata
+			puts "UPDATED !!!!!!!!!!!!!! "
+		end
 	end
   
 

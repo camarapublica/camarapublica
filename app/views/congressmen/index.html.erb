@@ -6,8 +6,7 @@
 <% @congressmen.each do |c| %>
 <tr>
 <td><%=render c%></td>
-<td><%=c.projects.count%></td>
-
+<td><%=c.projects.count%> (<%=c.efficiency%>% Publicados)</td>
 <tr>
 <% end %>
 </table>

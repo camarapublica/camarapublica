@@ -26,9 +26,16 @@ end
 task :updatecongressmenkarma => :environment do
 	Congressman.all.each do |c|
 		karma=0
+		projectsapproved=0
+		efficiency=0
 	  	c.projects.each do |project|
 	  		karma=karma+project.score
+	  		if project.status==1
+	  			projectsapproved=projectsapproved+1
+	  		end
+	  		efficiency=((projectsapproved*100)/c.projects.count)
 	  	end
+	  	c.update_attributes(:efficiency=>efficiency)
 	  	puts "ajustando karma para "+c.surnames+", "+c.names
 	  	c.update_attributes(:karma=>karma)
 	end

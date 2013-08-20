@@ -1,14 +1,14 @@
 class Congressman < ActiveRecord::Base
-  attr_accessible :karma, :names, :surnames
+  attr_accessible :karma, :names, :surnames, :efficiency
   has_many :authorships
   has_many :projects, through: :authorships
   def color
-  	if karma>0
+  	if self.karma>0
   		"success"
-  	end
-  	if karma<0
+  	elsif self.karma<0
   		"important"
   	end
   end
+
 
 end
