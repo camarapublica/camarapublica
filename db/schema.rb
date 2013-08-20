@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130820170401) do
+ActiveRecord::Schema.define(:version => 20130820180652) do
 
   create_table "authorships", :force => true do |t|
     t.integer  "project_id"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(:version => 20130820170401) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "",    :null => false
+    t.string   "email",                  :default => ""
     t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(:version => 20130820170401) do
     t.string   "name"
     t.boolean  "admin",                  :default => false
     t.integer  "karma",                  :default => 0
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

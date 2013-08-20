@@ -1,7 +1,7 @@
 	<% @popular=Project.order("score DESC").where(:status=>0).first %>
 	<% @hated=Project.order("score").where(:status=>0).first %>
 	<% @discussed=Project.order("score DESC").where(:status=>0).first %>
-<% if @popular && @hated && @discussed %>
+	<% if @popular && @hated && @discussed %>
 
 	<% if current_user %>
 	<h4>Hola <%=current_user.name %>!</h4>
@@ -12,7 +12,12 @@
 	<% else %>
 	<h3>Hola!</h3>
 	<p>Cámara pública es una nueva forma de opinar sobre los proyectos de ley que actualmente se están tramitando en el congreso.</p><p>Aquí tu puedes votar a favor o en contra y ayudar a medir el verdadero interés de la comunidad sobre las leyes chilenas.</p>
-	<p><a href="/users/sign_up" class="btn btn-small">registrate!</a> <a href="/users/sign_in" class="btn btn-small">iniciar sesión</a></p>
+	<p>
+		<%= link_to "Iniciar Sesión con Facebook", user_omniauth_authorize_path(:facebook), :class=>"btn" %>
+		<%= link_to "Iniciar Sesión con Twitter", user_omniauth_authorize_path(:twitter), :class=>"btn" %>
+		<a href="/users/sign_in" class="btn">Ingresar con e-mail</a>
+
+	</p>
 	<% end %>
 	<hr>
 	<h4>el más popular</h4>
@@ -22,6 +27,6 @@
 	<h4>el más polémico</h4>
 	<p><span class="label label-<%=@discussed.scorecolor%>"><%=@discussed.score%></span> <%=link_to(@discussed.title, "/projects/"+@discussed.remoteid)%></p>
 	<hr>
-<% end %>
-<a href="/acerca">Acerca de cámara pública</a><br>
-<a href="/contacto">Contacto</a>
+	<% end %>
+	<a href="/acerca">Acerca de cámara pública</a><br>
+	<a href="/contacto">Contacto</a>
