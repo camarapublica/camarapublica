@@ -1,0 +1,13 @@
+			<table class="table table-striped">
+				<tr>
+					<th>Parlamentario</th>
+					<th>Proyectos</th>
+				</tr>
+<% @congressmen.each do |c| %>
+<tr>
+<td><%=render c%></td>
+<td><%=c.projects.count%></td>
+
+<tr>
+<% end %>
+</table>

@@ -58,7 +58,9 @@
 		<div class="tab-pane" id="authors-tab">
 			<table class="table table-striped">
 			<% @project.congressmen.each do |congressman| %>
-				<%=render congressman%>
+			<tr>
+				<td><%=render congressman%></td>
+			</tr>
 			<% end %>
 			</table>
 		</div>

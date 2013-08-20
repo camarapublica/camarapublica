@@ -12,6 +12,7 @@ Camarapublica::Application.routes.draw do
   match 'deletecomment/:id' => 'comments#delete'
   match 'test/:id' => 'projects#update'
   match 'parlamentario/:id' => 'congressmen#show'
+  match 'parlamentarios' => 'congressmen#index'
   
   # Keep in mind you can assign values other than :controller and :action
 
