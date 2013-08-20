@@ -1,3 +1,6 @@
 <h1><%=@congressman.names%> <%=@congressman.surnames%></h1>
+<ul>
+<li>Karma: <span class="label label-<%=@congressman.color%>"><%=@congressman.karma%></span></li>
+</ul>
 <h2>Proyectos</h2>
 <%=render @congressman.projects %>

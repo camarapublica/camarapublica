@@ -23,6 +23,16 @@ task :updateremotedata => :environment do
 		p.fetchdata
 	end
 end
+task :updatecongressmenkarma => :environment do
+	Congressman.all.each do |c|
+		karma=0
+	  	c.projects.each do |project|
+	  		karma=karma+project.score
+	  	end
+	  	puts "ajustando karma para "+c.surnames+", "+c.names
+	  	c.update_attributes(:karma=>karma)
+	end
+end
 task :getoldprojects => :environment do
 	require "open-uri"
 	doc = Nokogiri::HTML(open("http://camarapublica.cl/historial_proyectos.html").read)

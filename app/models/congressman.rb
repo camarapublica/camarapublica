@@ -6,5 +6,9 @@ class Congressman < ActiveRecord::Base
   	if karma>0
   		"success"
   	end
+  	if karma<0
+  		"important"
+  	end
   end
+
 end
