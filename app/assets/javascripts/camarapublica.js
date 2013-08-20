@@ -35,6 +35,7 @@ function closethread(id) {
 	$("#comment"+id).remove();
 }
 function vote(object,id,score) {
+	$("#"+object+"score"+id).html("<img src='/assets/ajax-loader.gif'>");
 	if(current_user>0) {
 		$.ajax({
 		  url: "/vote/"+object+"/"+id+"/"+score,
